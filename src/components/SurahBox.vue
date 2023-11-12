@@ -1,0 +1,67 @@
+<template>
+  <div class="w-full flex justify-between items-start gap-4">
+    <div class="text-lg tabular-nums font-semibold">{{ verse.nomorAyat }}.</div>
+    <div dir="rtl" class="text-4xl leading-[60px]">
+      {{ verse.teksArab }}
+      <span
+        class="border inline-flex items-center justify-center w-10 h-10 border-gray-800 rounded-full text-2xl"
+      >
+        {{ convertToArabic(verse.nomorAyat) }}
+      </span>
+    </div>
+  </div>
+  <div class="mt-5 text-gray-500">
+    {{ verse.teksLatin }}
+  </div>
+  <div class="mt-3">
+    {{ verse.teksIndonesia }}
+  </div>
+  <div class="mt-5 flex gap-4">
+    <VersesActionButton>
+      <PlayIcon class="h-5 stroke-2" />
+    </VersesActionButton>
+    <VersesActionButton
+      @click="$emit('bookmarkClick', { surahId: Number(surah.id), surahName: surah.name, ...verse })"
+    >
+      <BookmarkSolidIcon v-if="isBookmarked" class="w-5 stroke-2" />
+      <BookmarkIcon v-if="!isBookmarked" class="w-5 stroke-2" />
+    </VersesActionButton>
+    <VersesActionButton>
+      <ShareIcon class="w-5 stroke-2" />
+    </VersesActionButton>
+  </div>
+</template>
+
+<script setup>
+import convertToArabic from '@/utils/convert-arabic'
+import VersesActionButton from './VersesActionButton.vue'
+import { BookmarkIcon, PlayIcon, ShareIcon } from '@heroicons/vue/24/outline'
+import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/vue/24/solid'
+import { computed } from 'vue'
+
+const { verse, surah, bookmarks } = defineProps({
+  surah: {
+    type: Object,
+    required: true
+  },
+  verse: {
+    type: Object,
+    required: true
+  },
+  bookmarks: {
+    type: Array,
+    required: true
+  }
+})
+
+defineEmits(['bookmarkClick'])
+
+const isBookmarked = computed(() => {
+  if (!bookmarks) return false
+
+  const isExist = bookmarks.find(
+    (item) => item.nomorAyat === verse.nomorAyat && item.surahId === Number(surah.id)
+  )
+  return Boolean(isExist)
+})
+</script>
