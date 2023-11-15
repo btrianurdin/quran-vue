@@ -6,7 +6,7 @@
       layoutStore.show && 'translate-x-0'
     ]"
   >
-    <div class="p-4 w-full bg-cyan-600 h-full">
+    <div class="p-3 w-full bg-cyan-600 h-full">
       <div class="relative">
         <h1 class="text-xl font-normal text-center text-white">Quran</h1>
         <button

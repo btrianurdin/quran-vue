@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-cyan-600 p-4 flex items-center justify-between">
+  <div class="bg-cyan-600 p-3 flex items-center justify-between">
     <button @click="layoutStore.show = true">
       <IconHamburgerMenu class="text-white" />
     </button>

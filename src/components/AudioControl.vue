@@ -9,7 +9,7 @@
         <XMarkIcon class="h-6 text-cyan-600" />
       </button>
     </div>
-    <div class="flex flex-col w-full gap-5 items-center">
+    <div class="flex flex-col w-full gap-3 items-center">
       <div class="relative bg-gray-300 w-full h-2 rounded-full overflow-hidden">
         <div class="w-1/2 bg-cyan-600 h-full" :style="{ width: `${current.percent}%` }"></div>
       </div>

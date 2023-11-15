@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex justify-between items-start gap-4">
     <div class="text-lg tabular-nums font-semibold">{{ verse.nomorAyat }}.</div>
-    <div dir="rtl" class="text-4xl leading-[60px]">
+    <div dir="rtl" class="text-4xl leading-[60px] font-sans">
       {{ verse.teksArab }}
       <span
         class="border inline-flex items-center justify-center w-10 h-10 border-gray-800 rounded-full text-2xl"

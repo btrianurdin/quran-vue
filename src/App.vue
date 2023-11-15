@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative mx-auto w-full md:w-[600px] bg-white min-h-screen flex flex-col overflow-hidden"
+    class="relative mx-auto w-full md:w-[600px] bg-white min-h-[100dvh] flex flex-col overflow-hidden"
   >
     <SidebarLayout />
 
