@@ -1,5 +1,5 @@
 <template>
-  <main class="h-full p-4">
+  <div class="h-full p-4">
     <div v-if="query.isLoading.value">
       <HomeSkeleton />
     </div>
@@ -31,7 +31,7 @@
         </RouterLink>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup>

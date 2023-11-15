@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'fixed w-full md:w-[350px] text-white h-screen z-50 -translate-x-full transition-transform duration-300',
+      'fixed w-full md:w-[350px] text-white h-screen z-[100] -translate-x-full transition-transform duration-300',
       'flex',
       layoutStore.show && 'translate-x-0'
     ]"
@@ -55,7 +55,7 @@
   </div>
   <div
     :class="[
-      'absolute top-0 right-0 bg-black bg-opacity-40 w-[300px] h-screen hidden backdrop',
+      'absolute top-0 right-0 bg-black bg-opacity-40 w-[300px] h-screen hidden backdrop z-50',
       layoutStore.show && '!block'
     ]"
   ></div>

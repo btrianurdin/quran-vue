@@ -17,12 +17,10 @@
     {{ verse.teksIndonesia }}
   </div>
   <div class="mt-5 flex gap-4">
-    <VersesActionButton>
+    <VersesActionButton @click="$emit('playClick', { ...verse })">
       <PlayIcon class="h-5 stroke-2" />
     </VersesActionButton>
-    <VersesActionButton
-      @click="$emit('bookmarkClick', { surahId: Number(surah.id), surahName: surah.name, ...verse })"
-    >
+    <VersesActionButton @click="$emit('bookmarkClick', { ...verse })">
       <BookmarkSolidIcon v-if="isBookmarked" class="w-5 stroke-2" />
       <BookmarkIcon v-if="!isBookmarked" class="w-5 stroke-2" />
     </VersesActionButton>
@@ -54,7 +52,7 @@ const { verse, surah, bookmarks } = defineProps({
   }
 })
 
-defineEmits(['bookmarkClick'])
+defineEmits(['bookmarkClick', 'playClick'])
 
 const isBookmarked = computed(() => {
   if (!bookmarks) return false

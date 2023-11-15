@@ -37,20 +37,20 @@
   <div v-if="query.isLoading.value">
     <SurahSkeleton />
   </div>
-  <div v-if="query.data.value" class="mt-10">
-    <div v-if="isAyahsExist">
-      <div
-        v-for="item in surahData?.ayat"
-        :key="item.nomorAyat"
-        class="border-b border-gray-300 first:border-t py-5 px-4 hover:bg-gray-100 transition-colors"
-      >
-        <SurahBox
-          :verse="item"
-          :surah="{ id: surahId, name: surahData.namaLatin }"
-          :bookmarks="bookmarks"
-          @bookmark-click="(data) => bookmarkHandler(data)"
-        />
-      </div>
+
+  <div v-if="isAyahsExist">
+    <div
+      v-for="item in surahData?.ayat"
+      :key="item.nomorAyat"
+      class="border-b border-gray-300 first:border-t py-5 px-4 hover:bg-gray-100 transition-colors"
+    >
+      <SurahBox
+        :verse="item"
+        :surah="{ id: surahId, name: surahData.namaLatin }"
+        :bookmarks="bookmarks"
+        @bookmark-click="(data) => bookmarkHandler(data)"
+        @play-click="(data) => playHandler(data)"
+      />
     </div>
   </div>
 </template>
@@ -65,6 +65,7 @@ import { computed, ref, watch, watchEffect } from 'vue'
 import SurahSkeleton from '@/components/skeletons/SurahSkeleton.vue'
 import SurahBox from '@/components/SurahBox.vue'
 import storage from '@/utils/storage'
+import { audioStore } from '@/stores'
 
 const $toast = useToast()
 
@@ -111,9 +112,10 @@ watchEffect(() => {
   }
 })
 
-const bookmarkHandler = (data) => {
+const bookmarkHandler = (verse) => {
+
   const existingIndex = bookmarks.value.findIndex(
-    (item) => item.nomorAyat === data.nomorAyat && item.surahId === Number(data.surahId)
+    (item) => item.nomorAyat === verse.nomorAyat && item.surahId === Number(surahId.value)
   )
 
   if (existingIndex !== -1) {
@@ -124,10 +126,34 @@ const bookmarkHandler = (data) => {
       $toast.error('Bookmark maksimal 10 item')
       return
     }
-    bookmarks.value.push(data)
+
+    const create = {
+      surahId: Number(surahId.value),
+      surahName: surahData.value.namaLatin,
+      ...verse
+    }
+
+    bookmarks.value.push(create)
   }
 
   // Simpan ke local storage setelah setiap operasi perubahan bookmark
   storage.set('bookmarks', bookmarks.value)
+}
+
+const playHandler = (verse) => {
+  audioStore.setShow(true)
+
+  audioStore.setSurah({
+    id: Number(surahId.value),
+    name: surahData.value.namaLatin,
+    numberOfVerses: surahData.value.jumlahAyat
+  })
+
+  const fullAudio = surahData.value.ayat?.map((item) => item.audio?.['05'])
+
+  audioStore.setCurrent({
+    sources: fullAudio,
+    verse: verse.nomorAyat
+  })
 }
 </script>

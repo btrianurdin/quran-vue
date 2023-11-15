@@ -25,7 +25,10 @@ const router = createRouter({
     {
       path: '/bookmarks',
       name: 'bookmarks',
-      component: () => import('../views/BookmarksView.vue')
+      component: () => import('../views/BookmarksView.vue'),
+      meta: {
+        title: 'Daftar Markah'
+      }
     },
     {
       path: '/settings',
@@ -42,7 +45,10 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/AboutView.vue')
     }
-  ]
+  ],
+  scrollBehavior() {
+    document.querySelector('#container').scrollTo(0, 0)
+  }
 })
 
 router.beforeEach((to, from, next) => {
