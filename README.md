@@ -1,35 +1,36 @@
-# idontknow
+# Quran (Al-Quran Digital) 🙌🏻
 
-This template should help get you started developing with Vue 3 in Vite.
+Baca Al-Quran 📖 di browser, dapat diakses melalui HP, laptop, tablet, dan gadget lain yang mendukung browser. Mudah, praktis, dan di saku kamu! 🙏🏻
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Live Web
+[https://quran.bnurd.me](https://quran.bnurd.me)
 
 ## Project Setup
 
 ```sh
-npm install
+yarn install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+yarn dev
 ```
 
 ### Compile and Minify for Production
 
 ```sh
-npm run build
+yarn build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Tech Stack
+![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 
-```sh
-npm run lint
-```
+## Credit
+1. Quran API dari [https://equran.id/](https://equran.id/)
+2. Icon Pack dari [https://heroicons.dev/](https://heroicons.dev/)
+---
+Twitter/X: [https://twitter.com/btrianurdin](https://twitter.com/btrianurdin)\
+Website: [https://bnurd.me](https://bnurd.me)
