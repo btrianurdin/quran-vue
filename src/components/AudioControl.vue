@@ -7,7 +7,7 @@
           Memutar Q.S {{ audioData.surahName }} Ayat {{ verseNumberPlay }}
         </p>
       </div>
-      <button @click="closeAudioBox">
+      <button @click="audioStore.setShow(false)">
         <XMarkIcon class="h-6 text-cyan-600" />
       </button>
     </div>
@@ -125,12 +125,6 @@ const handleEnded = () => {
   paused.value = true
 }
 
-const closeAudioBox = () => {
-  audioStore.setShow(false)
-  resetAudioState()
-  cleanUpListener()
-}
-
 const resetAudioState = () => {
   if (player.value) {
     player.value.pause()
@@ -140,6 +134,16 @@ const resetAudioState = () => {
     duration.value = 0
   }
 }
+
+watch(
+  () => audioStore.isShow,
+  (show) => {
+    if (!show) {
+      resetAudioState()
+      cleanUpListener()
+    }
+  }
+)
 
 const cleanUpListener = () => {
   player.value.removeEventListener('timeupdate', handleTimeUpdate)

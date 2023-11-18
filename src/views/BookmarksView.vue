@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-full">
-    <h2 class="text-xl text-center p-4">Markah</h2>
+    <h2 class="text-xl text-center font-medium p-4">Markah</h2>
 
     <div v-if="!bookmarks.length" class="p-4 flex-1 flex justify-center items-center">
       <p class="text-center italic text-gray-500">Kamu belum memiliki markah.</p>
@@ -51,6 +51,7 @@
 
 <script setup>
 import VersesActionButton from '@/components/VersesActionButton.vue'
+import { QARI_ID_KEY, defaultQariId } from '@/constants/cache-keys'
 import { audioStore } from '@/stores'
 import convertToArabic from '@/utils/convert-arabic'
 import storage from '@/utils/storage'
@@ -75,7 +76,9 @@ const removeBookmark = (bookmark) => {
 const playAudio = (bookmark) => {
   audioStore.setShow(true)
 
-  const audio = [bookmark.audio?.['01']]
+  const qariId = storage.get(QARI_ID_KEY) ?? defaultQariId
+
+  const audio = [bookmark.audio?.[qariId]]
 
   audioStore.setData({
     id: bookmark.surahId,

@@ -47,6 +47,9 @@
       <VerseLists
         :verse="item"
         :isBookmarked="isBookmarked(item.nomorAyat)"
+        :showTranslate="showTranslate"
+        :showLatin="showLatin"
+        :verseFontSize="verseFontSize"
         @bookmark-click="(data) => bookmarkHandler(data)"
         @play-click="(data) => playHandler(data)"
       />
@@ -65,6 +68,18 @@ import SurahSkeleton from '@/components/skeletons/SurahSkeleton.vue'
 import storage from '@/utils/storage'
 import { audioStore } from '@/stores'
 import VerseLists from '@/components/VerseLists.vue'
+import {
+  QARI_ID_KEY,
+  SHOW_LATIN_KEY,
+  SHOW_TRANSLATION_KEY,
+  VERSE_FONT_SIZE_KEY,
+  defaultQariId,
+  defaultVerseFontSize
+} from '@/constants/cache-keys'
+
+const showTranslate = ref(storage.get(SHOW_TRANSLATION_KEY) ?? true)
+const showLatin = ref(storage.get(SHOW_LATIN_KEY) ?? true)
+const verseFontSize = ref(storage.get(VERSE_FONT_SIZE_KEY) ?? defaultVerseFontSize)
 
 const $toast = useToast()
 
@@ -149,7 +164,9 @@ const bookmarkHandler = (verse) => {
 const playHandler = (verse) => {
   audioStore.setShow(true)
 
-  const fullAudio = surahData.value.ayat?.map((item) => item.audio?.['05'])
+  const qariId = storage.get(QARI_ID_KEY) ?? defaultQariId
+
+  const fullAudio = surahData.value.ayat?.map((item) => item.audio?.[qariId])
 
   audioStore.setData({
     id: Number(surahId.value),

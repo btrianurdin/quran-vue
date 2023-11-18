@@ -20,7 +20,7 @@ const router = createRouter({
     {
       path: '/prayers',
       name: 'prayers',
-      component: () => {}
+      component: () => import('../views/ShortSurah.vue')
     },
     {
       path: '/bookmarks',
@@ -38,7 +38,7 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => {}
+      component: () => import('../views/AboutView.vue')
     },
     {
       path: '/about',

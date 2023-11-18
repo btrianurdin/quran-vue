@@ -22,7 +22,6 @@ export const audioStore = reactive({
     this.isPlaying = isPlaying
   },
   setData(data) {
-    console.log(data)
     this.data = data
   },
   setCurrentPlay(verse) {

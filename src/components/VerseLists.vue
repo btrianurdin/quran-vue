@@ -1,19 +1,31 @@
 <template>
   <div class="w-full flex justify-between items-start gap-4">
     <div class="text-lg tabular-nums font-semibold">{{ verse.nomorAyat }}.</div>
-    <div dir="rtl" class="text-4xl leading-[60px] font-sans">
+    <div
+      dir="rtl"
+      class="font-sans"
+      :style="{
+        fontSize: verseFontSize + 'px',
+        lineHeight: verseFontSize * 1.7 + 'px'
+      }"
+    >
       {{ verse.teksArab }}
       <span
-        class="border inline-flex items-center justify-center w-10 h-10 border-gray-800 rounded-full text-2xl"
+        class="border inline-flex items-center justify-center w-10 h-10 border-gray-800 rounded-full"
+        :style="{
+          fontSize: verseFontSize / 2 + 'px',
+          width: verseFontSize * 1 + 'px',
+          height: verseFontSize * 1 + 'px'
+        }"
       >
         {{ convertToArabic(verse.nomorAyat) }}
       </span>
     </div>
   </div>
-  <div class="mt-5 text-gray-500">
+  <div class="mt-5 text-gray-500" v-if="showLatin">
     {{ verse.teksLatin }}
   </div>
-  <div class="mt-3">
+  <div class="mt-3" v-if="showTranslate">
     {{ verse.teksIndonesia }}
   </div>
   <div class="mt-5 flex gap-4">
@@ -43,6 +55,18 @@ const { verse } = defineProps({
   },
   isBookmarked: {
     type: Boolean,
+    required: true
+  },
+  showTranslate: {
+    type: Boolean,
+    required: true
+  },
+  showLatin: {
+    type: Boolean,
+    required: true
+  },
+  verseFontSize: {
+    type: Number,
     required: true
   }
 })
