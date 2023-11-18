@@ -35,31 +35,17 @@ import convertToArabic from '@/utils/convert-arabic'
 import VersesActionButton from './VersesActionButton.vue'
 import { BookmarkIcon, PlayIcon, ShareIcon } from '@heroicons/vue/24/outline'
 import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/vue/24/solid'
-import { computed } from 'vue'
 
-const { verse, surah, bookmarks } = defineProps({
-  surah: {
-    type: Object,
-    required: true
-  },
+const { verse } = defineProps({
   verse: {
     type: Object,
     required: true
   },
-  bookmarks: {
-    type: Array,
+  isBookmarked: {
+    type: Boolean,
     required: true
   }
 })
 
 defineEmits(['bookmarkClick', 'playClick'])
-
-const isBookmarked = computed(() => {
-  if (!bookmarks) return false
-
-  const isExist = bookmarks.find(
-    (item) => item.nomorAyat === verse.nomorAyat && item.surahId === Number(surah.id)
-  )
-  return Boolean(isExist)
-})
 </script>

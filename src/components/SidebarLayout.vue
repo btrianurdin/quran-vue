@@ -20,31 +20,40 @@
       <div>
         <ul class="siderbar-lists">
           <li>
-            <RouterLink to="/">
+            <RouterLink to="/" :class="[activeLink === '/' && 'bg-black bg-opacity-10']">
               <i><HomeIcon class="w-5 stroke-2" /></i>
               <span class="mt-1 leading-none">Halaman Awal</span>
             </RouterLink>
           </li>
           <li>
-            <RouterLink to="/prayers">
+            <RouterLink
+              to="/prayers"
+              :class="[activeLink === '/prayers' && 'bg-black bg-opacity-10']"
+            >
               <i><DocumentIcon class="w-5 stroke-2" /></i>
               <span class="mt-1 leading-none">Doa Pendek</span>
             </RouterLink>
           </li>
           <li>
-            <RouterLink to="/bookmarks">
+            <RouterLink
+              to="/bookmarks"
+              :class="[activeLink === '/bookmarks' && 'bg-black bg-opacity-10']"
+            >
               <i><BookmarkIcon class="w-5 stroke-2" /></i>
               <span class="mt-1 leading-none">Markah</span>
             </RouterLink>
           </li>
           <li>
-            <RouterLink to="/settings">
+            <RouterLink
+              to="/settings"
+              :class="[activeLink === '/settings' && 'bg-black bg-opacity-10']"
+            >
               <i><Cog6ToothIcon class="w-5 stroke-2" /></i>
               <span class="mt-1 leading-none">Pengaturan</span>
             </RouterLink>
           </li>
           <li>
-            <RouterLink to="/about">
+            <RouterLink to="/about" :class="[activeLink === '/about' && 'bg-black bg-opacity-10']">
               <i><InformationCircleIcon class="w-5 stroke-2" /></i>
               <span class="mt-1 leading-none">Tentang</span>
             </RouterLink>
@@ -71,6 +80,14 @@ import {
   HomeIcon,
   InformationCircleIcon
 } from '@heroicons/vue/24/outline'
+import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+
+const router = useRouter()
+
+const activeLink = computed(() => {
+  return router.currentRoute.value.path
+})
 </script>
 
 <style lang="postcss" scoped>
@@ -83,7 +100,7 @@ import {
 }
 
 .siderbar-lists li a {
-  @apply w-full p-4 hover:bg-black hover:bg-opacity-10 hover:rounded-md flex items-center gap-3;
+  @apply w-full p-4 hover:bg-black hover:bg-opacity-10 rounded-md flex items-center gap-3;
 }
 
 @keyframes fadeIn {

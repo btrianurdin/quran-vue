@@ -13,7 +13,7 @@
         <RouterView />
       </div>
     </main>
-  
+
     <AudioControl />
   </div>
   <VueQueryDevtools />
@@ -34,7 +34,6 @@ const router = useRouter()
 watch(
   () => router.currentRoute.value,
   () => {
-    if (!layoutStore.show) return
     layoutStore.show = false
   }
 )

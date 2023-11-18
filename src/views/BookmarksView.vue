@@ -34,7 +34,7 @@
           {{ bookmark.teksIndonesia }}
         </div>
         <div class="mt-5 flex gap-4">
-          <VersesActionButton @click="console.log(bookmark)">
+          <VersesActionButton @click="playAudio(bookmark)">
             <PlayIcon class="h-5 stroke-2" />
           </VersesActionButton>
           <VersesActionButton @click="removeBookmark(bookmark)">
@@ -51,6 +51,7 @@
 
 <script setup>
 import VersesActionButton from '@/components/VersesActionButton.vue'
+import { audioStore } from '@/stores'
 import convertToArabic from '@/utils/convert-arabic'
 import storage from '@/utils/storage'
 import { PlayIcon, ShareIcon } from '@heroicons/vue/24/outline'
@@ -69,5 +70,20 @@ const removeBookmark = (bookmark) => {
   bookmarks.value.splice(findIndex, 1)
 
   storage.set('bookmarks', bookmarks.value)
+}
+
+const playAudio = (bookmark) => {
+  audioStore.setShow(true)
+
+  const audio = [bookmark.audio?.['01']]
+
+  audioStore.setData({
+    id: bookmark.surahId,
+    surahName: bookmark.surahName,
+    numberOfVerses: 1, // bookmark just play one verse
+    sources: audio
+  })
+
+  audioStore.setCurrentPlay(1) // bookmark just play one verse
 }
 </script>

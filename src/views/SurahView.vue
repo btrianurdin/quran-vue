@@ -44,10 +44,9 @@
       :key="item.nomorAyat"
       class="border-b border-gray-300 first:border-t py-5 px-4 hover:bg-gray-100 transition-colors"
     >
-      <SurahBox
+      <VerseLists
         :verse="item"
-        :surah="{ id: surahId, name: surahData.namaLatin }"
-        :bookmarks="bookmarks"
+        :isBookmarked="isBookmarked(item.nomorAyat)"
         @bookmark-click="(data) => bookmarkHandler(data)"
         @play-click="(data) => playHandler(data)"
       />
@@ -63,9 +62,9 @@ import IconChevronLeft from '@/components/icons/IconChevronLeft.vue'
 import getDetailsSurah from '../services/repositories/get-details-surah'
 import { computed, ref, watch, watchEffect } from 'vue'
 import SurahSkeleton from '@/components/skeletons/SurahSkeleton.vue'
-import SurahBox from '@/components/SurahBox.vue'
 import storage from '@/utils/storage'
 import { audioStore } from '@/stores'
+import VerseLists from '@/components/VerseLists.vue'
 
 const $toast = useToast()
 
@@ -112,8 +111,15 @@ watchEffect(() => {
   }
 })
 
-const bookmarkHandler = (verse) => {
+const isBookmarked = (verseId) => {
+  const isExist = bookmarks.value.find(
+    (item) => item.nomorAyat === Number(verseId) && item.surahId === Number(surahId.value)
+  )
 
+  return Boolean(isExist)
+}
+
+const bookmarkHandler = (verse) => {
   const existingIndex = bookmarks.value.findIndex(
     (item) => item.nomorAyat === verse.nomorAyat && item.surahId === Number(surahId.value)
   )
@@ -143,17 +149,15 @@ const bookmarkHandler = (verse) => {
 const playHandler = (verse) => {
   audioStore.setShow(true)
 
-  audioStore.setSurah({
-    id: Number(surahId.value),
-    name: surahData.value.namaLatin,
-    numberOfVerses: surahData.value.jumlahAyat
-  })
-
   const fullAudio = surahData.value.ayat?.map((item) => item.audio?.['05'])
 
-  audioStore.setCurrent({
-    sources: fullAudio,
-    verse: verse.nomorAyat
+  audioStore.setData({
+    id: Number(surahId.value),
+    surahName: surahData.value.namaLatin,
+    numberOfVerses: surahData.value.jumlahAyat,
+    sources: fullAudio
   })
+
+  audioStore.setCurrentPlay(verse.nomorAyat)
 }
 </script>

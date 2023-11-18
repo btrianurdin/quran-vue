@@ -3,7 +3,9 @@
     <div class="flex justify-between items-center">
       <div class="flex items-center gap-2">
         <div class="w-3 h-3 bg-cyan-600 animate-pulse rounded-full" />
-        <p class="text-sm text-gray-600">Memutar Q.S {{ surahName }} Ayat {{ verseNumber }}</p>
+        <p class="text-sm text-gray-600">
+          Memutar Q.S {{ audioData.surahName }} Ayat {{ verseNumberPlay }}
+        </p>
       </div>
       <button @click="closeAudioBox">
         <XMarkIcon class="h-6 text-cyan-600" />
@@ -51,12 +53,15 @@ const current = ref({
   percent: 0
 })
 
-const surahName = computed(() => audioStore.surah.name)
-const verseNumber = computed(() => audioStore.current?.verse)
+const audioData = computed(() => audioStore.data)
+const verseNumberPlay = computed(() => audioStore.currentPlay)
 
-watch([() => audioStore.current, verseNumber], ([current, verse]) => {
-  if (current) {
-    player.value.src = current.sources[verse - 1]
+/**
+ * watch every changes on audioData and verseNumberPlay
+ */
+watch([audioData, verseNumberPlay], ([data, verse]) => {
+  if (verse) {
+    player.value.src = data.sources[verse - 1]
     player.value.load()
 
     autoPlay()
@@ -74,7 +79,7 @@ const audioNavigation = (type) => {
 
 const autoPlay = () => {
   resetAudioState()
-  player.value.volume = 0.5
+  player.value.volume = 1
 
   player.value.play()
   paused.value = false
@@ -82,21 +87,24 @@ const autoPlay = () => {
   player.value.addEventListener('timeupdate', handleTimeUpdate)
   player.value.addEventListener('loadedmetadata', handleLoadedMetadata)
   player.value.addEventListener('pause', handlePause)
+  player.value.addEventListener('playing', handlePlay)
   player.value.addEventListener('ended', handleEnded)
 }
 
 const audioPlayButton = () => {
   if (paused.value) {
     player.value.play()
-    paused.value = false
   } else {
     player.value.pause()
-    paused.value = true
   }
 }
 
 const handlePause = () => {
   paused.value = true
+}
+
+const handlePlay = () => {
+  paused.value = false
 }
 
 const handleTimeUpdate = (e) => {
@@ -137,6 +145,7 @@ const cleanUpListener = () => {
   player.value.removeEventListener('timeupdate', handleTimeUpdate)
   player.value.removeEventListener('loadedmetadata', handleLoadedMetadata)
   player.value.removeEventListener('pause', handlePause)
+  player.value.removeEventListener('playing', handlePlay)
   player.value.removeEventListener('ended', handleEnded)
 }
 

@@ -13,63 +13,51 @@ export const layoutStore = reactive({
 export const audioStore = reactive({
   isShow: false,
   isPlaying: false,
-  surah: null,
-  current: null,
+  data: null,
+  currentPlay: null,
   setShow(isShow) {
     this.isShow = isShow
   },
   setPlaying(isPlaying) {
     this.isPlaying = isPlaying
   },
-  setSurah(data) {
-    this.surah = data
+  setData(data) {
+    console.log(data)
+    this.data = data
   },
-  setCurrent(audio) {
-    this.current = audio
+  setCurrentPlay(verse) {
+    this.currentPlay = verse
   },
   nextVerse() {
-    this.current.verse++
-    console.log(this.current)
+    this.currentPlay++
   },
   prevVerse() {
-    if (this.current.verse === 1) return
-    this.current.verse--
+    if (this.currentPlay === 1) return
+    this.currentPlay--
   },
   hasNext() {
-    return this.current.verse < this.surah.numberOfVerses
+    return this.currentPlay < this.data.numberOfVerses
   }
 })
 
 /**
- * @typedef {Object} AudioStoreTypes
+ * @typedef AudioStoreTypes
  * @property {boolean} isShow
  * @property {boolean} isPlaying
- * @property {SurahTypes} surah
- * @property {AudioItemTypes} current
+ * @property {AudioTypes} data
+ * @property {number} currentPlay
  * @property {(isShow: boolean) => {}} setShow
  * @property {(isPlaying: boolean) => {}} setPlaying
- * @property {(audio: AudioItemTypes) => {}} setCurrent
- * @property {(data: SurahTypes) => {}} setSurah
+ * @property {(audio: AudioTypes) => {}} setData
+ * @property {(verse: number) => {}} setCurrentPlay
  * @property {() => {}} nextVerse
  * @property {() => {}} prevVerse
  */
 
 /**
- * @typedef {Object} SurahTypes
- * @property {number} id
- * @property {string} name
- * @property {number} numberOfVerses
- */
-
-/**
  * @typedef {Object} AudioTypes
- * @property {AudioItemTypes} current
- * @property {AudioItemTypes} next
- * @property {AudioItemTypes} before
- */
-
-/**
- * @typedef {Object} AudioItemTypes
+ * @property {number} id
+ * @property {string} surahName
+ * @property {number} numberOfVerses
  * @property {Array<string>} sources
- * @property {string} verse
  */
