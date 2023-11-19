@@ -1,61 +1,62 @@
 <template>
   <div class="relative p-4">
-    <div v-if="surahData?.suratSebelumnya" class="absolute top-1/2 -translate-y-1/2">
-      <RouterLink
-        :to="{
-          path: `/surah/${surahData.suratSebelumnya.nomor}`
-        }"
-        class="flex items-center gap-2"
-      >
-        <IconChevronLeft class="text-gray-800" />
-        <span class="mt-0.5">{{ surahData.suratSebelumnya?.namaLatin }}</span>
-      </RouterLink>
-    </div>
-    <div v-if="surahData?.suratSelanjutnya" class="absolute right-4 top-1/2 -translate-y-1/2">
-      <RouterLink
-        :to="{ path: `/surah/${surahData.suratSelanjutnya.nomor}` }"
-        class="flex items-center gap-2"
-      >
-        <span class="mt-0.5">{{ surahData.suratSelanjutnya?.namaLatin }}</span>
-        <IconChevronLeft class="text-gray-800 rotate-180" />
-      </RouterLink>
-    </div>
-
     <div class="text-center">
-      <p class="text-sm">Surat</p>
       <div v-if="query.isLoading.value">
         <div
           class="w-[100px] h-6 bg-gray-300 rounded-md animate-pulse mt-1 text-center mx-auto"
         ></div>
+        <div
+          class="w-[140px] h-3 bg-gray-300 rounded-md animate-pulse mt-1 text-center mx-auto"
+        ></div>
+        <div
+          class="w-[80px] h-3 bg-gray-300 rounded-md animate-pulse mt-2 text-center mx-auto"
+        ></div>
       </div>
-      <h1 v-else class="text-xl font-normal">
-        {{ surahData?.namaLatin }}
-      </h1>
+      <div v-else>
+        <h1 class="text-xl font-normal">
+          {{ surahData?.namaLatin }}
+        </h1>
+        <p class="text-sm mb-1">
+          {{ surahData?.arti }} • {{ surahData?.tempatTurun }} • {{ surahData?.jumlahAyat }} Ayat
+        </p>
+        <p>Ayat {{ surahData?.ayat?.nomorAyat }}</p>
+      </div>
     </div>
   </div>
 
-  <div v-if="query.isLoading.value">
-    <SurahSkeleton />
+  <div v-if="query.isLoading.value" class="border-b border-b-gray-300">
+    <SurahSkeleton count="1" />
+    <div class="border-t border-t-gray-300 p-4">
+      <div class="w-[200px] mb-2 h-5 bg-gray-300 animate-pulse rounded-md"></div>
+      <div class="w-full mb-1 h-3 bg-gray-300 animate-pulse rounded-md"></div>
+      <div class="w-full mb-1 h-3 bg-gray-300 animate-pulse rounded-md"></div>
+      <div class="w-full mb-1 h-3 bg-gray-300 animate-pulse rounded-md"></div>
+      <div class="w-1/2 h-3 bg-gray-300 animate-pulse rounded-md"></div>
+    </div>
   </div>
 
-  <div v-if="isAyahsExist">
+  <div v-if="!query.isLoading.value && isAyahsExist">
     <div
-      v-for="item in surahData?.ayat"
-      :key="item.nomorAyat"
       class="border-b border-gray-300 first:border-t py-5 px-4 hover:bg-gray-100 transition-colors"
     >
       <VerseLists
         :surahId="Number(surahId)"
-        :verse="item"
-        :isBookmarked="isBookmarked(item.nomorAyat)"
-        :showTranslate="showTranslate"
-        :showLatin="showLatin"
+        :verse="surahData?.ayat"
+        :isBookmarked="isBookmarked(surahData?.ayat?.nomorAyat)"
+        :showTranslate="true"
+        :showLatin="true"
         :verseFontSize="verseFontSize"
+        :withLinkVerse="false"
         @share-click="(data) => shareHandler(data)"
         @bookmark-click="(data) => bookmarkHandler(data)"
         @play-click="(data) => playHandler(data)"
       />
     </div>
+  </div>
+
+  <div v-if="!query.isLoading.value && isAyahsExist" class="p-4 border-b border-gray-300">
+    <h3 class="mb-2 text-lg">Deskripsi</h3>
+    <p v-html="surahData?.deskripsi"></p>
   </div>
 </template>
 
@@ -63,24 +64,19 @@
 import { useQuery } from '@tanstack/vue-query'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import IconChevronLeft from '@/components/icons/IconChevronLeft.vue'
-import getDetailsSurah from '../services/repositories/get-details-surah'
-import { computed, ref, watch, watchEffect } from 'vue'
+import getDetailVerse from '../services/repositories/get-detail-verse'
+import { computed, ref, watchEffect } from 'vue'
 import SurahSkeleton from '@/components/skeletons/SurahSkeleton.vue'
 import storage from '@/utils/storage'
 import { audioStore } from '@/stores'
 import VerseLists from '@/components/VerseLists.vue'
 import {
   QARI_ID_KEY,
-  SHOW_LATIN_KEY,
-  SHOW_TRANSLATION_KEY,
   VERSE_FONT_SIZE_KEY,
   defaultQariId,
   defaultVerseFontSize
 } from '@/constants/cache-keys'
 
-const showTranslate = ref(storage.get(SHOW_TRANSLATION_KEY) ?? true)
-const showLatin = ref(storage.get(SHOW_LATIN_KEY) ?? true)
 const verseFontSize = ref(storage.get(VERSE_FONT_SIZE_KEY) ?? defaultVerseFontSize)
 
 const $toast = useToast()
@@ -91,34 +87,21 @@ const router = useRouter()
 const surahData = ref(null)
 
 const isAyahsExist = computed(() => {
-  return surahData.value?.ayat?.length > 0
+  return surahData.value?.ayat
 })
 
 const surahId = computed(() => {
   return router.currentRoute.value.params.id
 })
 
-const queryKey = computed({
-  get() {
-    return ['surah', surahId.value]
-  },
-  set(val) {
-    return val
-  }
+const verseId = computed(() => {
+  return router.currentRoute.value.params.verseId
 })
 
 const query = useQuery({
-  queryKey,
-  queryFn: () => getDetailsSurah({ id: surahId.value }),
-  enabled: Boolean(surahId.value),
-  select: (data) => {
-    return data?.data
-  }
-})
-
-watch(surahId, () => {
-  queryKey.value = ['surah', surahId.value]
-  query.refetch()
+  queryKey: ['surah', surahId.value, 'verse', verseId.value],
+  queryFn: () => getDetailVerse({ surahId: surahId.value, verseId: verseId.value }),
+  enabled: Boolean(surahId.value)
 })
 
 watchEffect(() => {
@@ -167,8 +150,8 @@ const shareHandler = async (data) => {
   try {
     const shareData = {
       title: `Q.S. ${surahData.value.namaLatin} ayat ${data.nomorAyat} - Quran`,
-      text: `${data.teksArab}`,
-      url: `${window.location.href}/verse/${data.nomorAyat}`
+      text: `${data.teksArab} (${data.teksIndonesia})`,
+      url: window.location.href
     }
     await navigator.share(shareData)
   } catch (error) {
@@ -181,15 +164,16 @@ const playHandler = (verse) => {
 
   const qariId = storage.get(QARI_ID_KEY) ?? defaultQariId
 
-  const fullAudio = surahData.value.ayat?.map((item) => item.audio?.[qariId])
+  const audio = [verse.audio?.[qariId]]
 
   audioStore.setData({
-    id: Number(surahId.value),
+    id: surahId.value,
     surahName: surahData.value.namaLatin,
-    numberOfVerses: surahData.value.jumlahAyat,
-    sources: fullAudio
+    numberOfVerses: 1, // bookmark just play one verse
+    sources: audio,
+    fixedVerseNumber: verse.nomorAyat
   })
 
-  audioStore.setCurrentPlay(verse.nomorAyat)
+  audioStore.setCurrentPlay(1) // bookmark
 }
 </script>

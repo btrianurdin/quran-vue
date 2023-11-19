@@ -18,6 +18,11 @@ const router = createRouter({
       component: () => import('../views/SurahView.vue')
     },
     {
+      path: '/surah/:id/verse/:verseId',
+      name: 'verse',
+      component: () => import('../views/VerseView.vue')
+    },
+    {
       path: '/prayers',
       name: 'prayers',
       component: () => import('../views/ShortSurah.vue')

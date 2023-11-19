@@ -59,4 +59,5 @@ export const audioStore = reactive({
  * @property {string} surahName
  * @property {number} numberOfVerses
  * @property {Array<string>} sources
+ * @property {number} fixedVerseNumber
  */

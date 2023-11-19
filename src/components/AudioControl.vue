@@ -4,7 +4,8 @@
       <div class="flex items-center gap-2">
         <div class="w-3 h-3 bg-cyan-600 animate-pulse rounded-full" />
         <p class="text-sm text-gray-600">
-          Memutar Q.S {{ audioData.surahName }} Ayat {{ verseNumberPlay }}
+          Memutar Q.S {{ audioData.surahName }} Ayat
+          {{ audioData?.fixedVerseNumber ?? verseNumberPlay }}
         </p>
       </div>
       <button @click="audioStore.setShow(false)">

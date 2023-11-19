@@ -28,7 +28,7 @@
   <div class="mt-3" v-if="showTranslate">
     {{ verse.teksIndonesia }}
   </div>
-  <div class="mt-5 flex gap-4">
+  <div class="mt-5 flex gap-3 relative">
     <VersesActionButton @click="$emit('playClick', { ...verse })">
       <PlayIcon class="h-5 stroke-2" />
     </VersesActionButton>
@@ -36,9 +36,14 @@
       <BookmarkSolidIcon v-if="isBookmarked" class="w-5 stroke-2" />
       <BookmarkIcon v-if="!isBookmarked" class="w-5 stroke-2" />
     </VersesActionButton>
-    <VersesActionButton>
+    <VersesActionButton @click="$emit('shareClick', { ...verse })">
       <ShareIcon class="w-5 stroke-2" />
     </VersesActionButton>
+    <RouterLink v-if="withLinkVerse" :to="`/surah/${surahId}/verse/${verse.nomorAyat}`">
+      <VersesActionButton>
+        <LinkIcon class="w-5 stroke-2" />
+      </VersesActionButton>
+    </RouterLink>
   </div>
 </template>
 
@@ -46,9 +51,13 @@
 import convertToArabic from '@/utils/convert-arabic'
 import VersesActionButton from './VersesActionButton.vue'
 import { BookmarkIcon, PlayIcon, ShareIcon } from '@heroicons/vue/24/outline'
-import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/vue/24/solid'
+import { BookmarkIcon as BookmarkSolidIcon, LinkIcon } from '@heroicons/vue/24/solid'
 
 const { verse } = defineProps({
+  surahId: {
+    type: Number,
+    required: true
+  },
   verse: {
     type: Object,
     required: true
@@ -56,6 +65,11 @@ const { verse } = defineProps({
   isBookmarked: {
     type: Boolean,
     required: true
+  },
+  withLinkVerse: {
+    type: Boolean,
+    required: false,
+    default: true
   },
   showTranslate: {
     type: Boolean,
@@ -71,5 +85,5 @@ const { verse } = defineProps({
   }
 })
 
-defineEmits(['bookmarkClick', 'playClick'])
+defineEmits(['bookmarkClick', 'playClick', 'shareClick'])
 </script>
