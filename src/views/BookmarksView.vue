@@ -33,16 +33,21 @@
         <div class="mt-3">
           {{ bookmark.teksIndonesia }}
         </div>
-        <div class="mt-5 flex gap-4">
+        <div class="mt-5 flex gap-3">
           <VersesActionButton @click="playAudio(bookmark)">
             <PlayIcon class="h-5 stroke-2" />
           </VersesActionButton>
           <VersesActionButton @click="removeBookmark(bookmark)">
             <BookmarkSolidIcon class="w-5 stroke-2" />
           </VersesActionButton>
-          <VersesActionButton>
+          <VersesActionButton @click="shareHandler(bookmark)">
             <ShareIcon class="w-5 stroke-2" />
           </VersesActionButton>
+          <RouterLink :to="`/surah/${bookmark.surahId}/verse/${bookmark.nomorAyat}`">
+            <VersesActionButton>
+              <LinkIcon class="w-5 stroke-2" />
+            </VersesActionButton>
+          </RouterLink>
         </div>
       </div>
     </div>
@@ -52,11 +57,11 @@
 <script setup>
 import VersesActionButton from '@/components/VersesActionButton.vue'
 import { QARI_ID_KEY, defaultQariId } from '@/constants/cache-keys'
-import { audioStore } from '@/stores'
+import { audioStore, shareStore } from '@/stores'
 import convertToArabic from '@/utils/convert-arabic'
 import storage from '@/utils/storage'
 import { PlayIcon, ShareIcon } from '@heroicons/vue/24/outline'
-import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/vue/24/solid'
+import { BookmarkIcon as BookmarkSolidIcon, LinkIcon } from '@heroicons/vue/24/solid'
 import { ref } from 'vue'
 
 const bookmarks = ref(storage.get('bookmarks') ?? [])
@@ -73,6 +78,13 @@ const removeBookmark = (bookmark) => {
   storage.set('bookmarks', bookmarks.value)
 }
 
+const shareHandler = (data) => {
+  shareStore.show({
+    link: window.location.origin + `/surah/${data.surahId}/verse/${data.nomorAyat}`,
+    text: `Q.S ${data.surahName} Ayat ${data.nomorAyat}`
+  })
+}
+
 const playAudio = (bookmark) => {
   audioStore.setShow(true)
 
@@ -84,7 +96,8 @@ const playAudio = (bookmark) => {
     id: bookmark.surahId,
     surahName: bookmark.surahName,
     numberOfVerses: 1, // bookmark just play one verse
-    sources: audio
+    sources: audio,
+    fixedVerseNumber: bookmark.nomorAyat
   })
 
   audioStore.setCurrentPlay(1) // bookmark just play one verse

@@ -1,9 +1,31 @@
 import { reactive } from 'vue'
 
 export const layoutStore = reactive({
-  show: false,
-  toggle() {
-    this.show = !this.show
+  isShow: false,
+  show() {
+    this.isShow = true
+  },
+  hide() {
+    this.isShow = false
+  }
+})
+
+export const shareStore = reactive({
+  isShow: false,
+  data: {
+    link: '',
+    text: ''
+  },
+  show(data) {
+    this.isShow = true
+    this.data = data
+  },
+  hide() {
+    this.isShow = false
+    this.data = {
+      link: '',
+      text: ''
+    }
   }
 })
 
@@ -59,4 +81,5 @@ export const audioStore = reactive({
  * @property {string} surahName
  * @property {number} numberOfVerses
  * @property {Array<string>} sources
+ * @property {number} fixedVerseNumber
  */
