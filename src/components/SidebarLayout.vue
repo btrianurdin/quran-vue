@@ -3,7 +3,7 @@
     :class="[
       'fixed w-full md:w-[350px] text-white h-screen z-[100] -translate-x-full transition-transform duration-300',
       'flex',
-      layoutStore.show && 'translate-x-0'
+      layoutStore.isShow && 'translate-x-0'
     ]"
   >
     <div class="p-3 w-full bg-cyan-600 h-full">
@@ -11,7 +11,7 @@
         <h1 class="text-xl font-normal text-center text-white">Quran</h1>
         <button
           class="absolute top-1/2 -translate-y-1/2 right-0 text-2xl"
-          @click="layoutStore.show = false"
+          @click="layoutStore.hide()"
         >
           <IconTimes />
         </button>
@@ -62,10 +62,12 @@
       </div>
     </div>
   </div>
+
+  <!-- Backdrop -->
   <div
     :class="[
-      'absolute top-0 right-0 bg-black bg-opacity-40 w-[300px] h-screen hidden backdrop z-50',
-      layoutStore.show && '!block'
+      'backdrop absolute top-0 right-0 bg-black bg-opacity-40 w-full h-screen hidden z-50',
+      layoutStore.isShow && '!block'
     ]"
   ></div>
 </template>
@@ -91,24 +93,11 @@ const activeLink = computed(() => {
 </script>
 
 <style lang="postcss" scoped>
-.backdrop {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
 .siderbar-lists {
   @apply flex flex-col gap-2 mt-10 [&_i]:flex-shrink-0;
 }
 
 .siderbar-lists li a {
   @apply w-full p-4 hover:bg-black hover:bg-opacity-10 rounded-md flex items-center gap-3;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 </style>

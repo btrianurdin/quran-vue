@@ -40,7 +40,7 @@
           <VersesActionButton @click="removeBookmark(bookmark)">
             <BookmarkSolidIcon class="w-5 stroke-2" />
           </VersesActionButton>
-          <VersesActionButton>
+          <VersesActionButton @click="shareHandler(bookmark)">
             <ShareIcon class="w-5 stroke-2" />
           </VersesActionButton>
           <RouterLink :to="`/surah/${bookmark.surahId}/verse/${bookmark.nomorAyat}`">
@@ -57,7 +57,7 @@
 <script setup>
 import VersesActionButton from '@/components/VersesActionButton.vue'
 import { QARI_ID_KEY, defaultQariId } from '@/constants/cache-keys'
-import { audioStore } from '@/stores'
+import { audioStore, shareStore } from '@/stores'
 import convertToArabic from '@/utils/convert-arabic'
 import storage from '@/utils/storage'
 import { PlayIcon, ShareIcon } from '@heroicons/vue/24/outline'
@@ -76,6 +76,13 @@ const removeBookmark = (bookmark) => {
   bookmarks.value.splice(findIndex, 1)
 
   storage.set('bookmarks', bookmarks.value)
+}
+
+const shareHandler = (data) => {
+  shareStore.show({
+    link: window.location.origin + `/surah/${data.surahId}/verse/${data.nomorAyat}`,
+    text: `Q.S ${data.surahName} Ayat ${data.nomorAyat}`
+  })
 }
 
 const playAudio = (bookmark) => {

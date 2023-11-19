@@ -125,7 +125,7 @@ const samples = ref([
     teksIndonesia: 'Segala puji bagi Allah, Tuhan seluruh alam,'
   },
   {
-    nomorAyat: 234,
+    nomorAyat: 3,
     teksArab: 'الرَّحْمٰنِ الرَّحِيْمِۙ',
     teksLatin: 'ar-raḥmānir-raḥīm(i).',
     teksIndonesia: 'Yang Maha Pengasih, Maha Penyayang,'

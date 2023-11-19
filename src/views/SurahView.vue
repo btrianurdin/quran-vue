@@ -68,7 +68,7 @@ import getDetailsSurah from '../services/repositories/get-details-surah'
 import { computed, ref, watch, watchEffect } from 'vue'
 import SurahSkeleton from '@/components/skeletons/SurahSkeleton.vue'
 import storage from '@/utils/storage'
-import { audioStore } from '@/stores'
+import { audioStore, shareStore } from '@/stores'
 import VerseLists from '@/components/VerseLists.vue'
 import {
   QARI_ID_KEY,
@@ -164,16 +164,10 @@ const bookmarkHandler = (verse) => {
 }
 
 const shareHandler = async (data) => {
-  try {
-    const shareData = {
-      title: `Q.S. ${surahData.value.namaLatin} ayat ${data.nomorAyat} - Quran`,
-      text: `${data.teksArab}`,
-      url: `${window.location.href}/verse/${data.nomorAyat}`
-    }
-    await navigator.share(shareData)
-  } catch (error) {
-    $toast.error('Terjadi kesalahan.')
-  }
+  shareStore.show({
+    link: window.location.origin + `/surah/${surahId.value}/verse/${data.nomorAyat}`,
+    text: `Q.S ${surahData.value.namaLatin} Ayat ${data.nomorAyat}`
+  })
 }
 
 const playHandler = (verse) => {

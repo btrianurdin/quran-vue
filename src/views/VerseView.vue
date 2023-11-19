@@ -1,37 +1,22 @@
 <template>
-  <div class="relative p-4">
-    <div class="text-center">
-      <div v-if="query.isLoading.value">
-        <div
-          class="w-[100px] h-6 bg-gray-300 rounded-md animate-pulse mt-1 text-center mx-auto"
-        ></div>
-        <div
-          class="w-[140px] h-3 bg-gray-300 rounded-md animate-pulse mt-1 text-center mx-auto"
-        ></div>
-        <div
-          class="w-[80px] h-3 bg-gray-300 rounded-md animate-pulse mt-2 text-center mx-auto"
-        ></div>
-      </div>
-      <div v-else>
-        <h1 class="text-xl font-normal">
-          {{ surahData?.namaLatin }}
-        </h1>
-        <p class="text-sm mb-1">
-          {{ surahData?.arti }} • {{ surahData?.tempatTurun }} • {{ surahData?.jumlahAyat }} Ayat
-        </p>
-        <p>Ayat {{ surahData?.ayat?.nomorAyat }}</p>
-      </div>
+  <div v-if="query.isLoading.value" class="h-full p-4 flex flex-col">
+    <div class="w-[100px] h-6 bg-gray-300 rounded-md animate-pulse mt-1 text-center mx-auto"></div>
+    <div class="w-[140px] h-3 bg-gray-300 rounded-md animate-pulse mt-1 text-center mx-auto"></div>
+    <div class="w-[80px] h-3 bg-gray-300 rounded-md animate-pulse mt-2 text-center mx-auto"></div>
+    <div class="flex-1 w-full flex justify-center items-center">
+      <IconSpinner class="w-8 h-8 text-gray-200 animate-spin fill-cyan-600" />
     </div>
   </div>
 
-  <div v-if="query.isLoading.value" class="border-b border-b-gray-300">
-    <SurahSkeleton count="1" />
-    <div class="border-t border-t-gray-300 p-4">
-      <div class="w-[200px] mb-2 h-5 bg-gray-300 animate-pulse rounded-md"></div>
-      <div class="w-full mb-1 h-3 bg-gray-300 animate-pulse rounded-md"></div>
-      <div class="w-full mb-1 h-3 bg-gray-300 animate-pulse rounded-md"></div>
-      <div class="w-full mb-1 h-3 bg-gray-300 animate-pulse rounded-md"></div>
-      <div class="w-1/2 h-3 bg-gray-300 animate-pulse rounded-md"></div>
+  <div v-if="!query.isLoading.value && isAyahsExist" class="text-center p-4">
+    <div>
+      <h1 class="text-xl font-normal">
+        {{ surahData?.namaLatin }}
+      </h1>
+      <p class="text-sm mb-1">
+        {{ surahData?.arti }} • {{ surahData?.tempatTurun }} • {{ surahData?.jumlahAyat }} Ayat
+      </p>
+      <p>Ayat {{ surahData?.ayat?.nomorAyat }}</p>
     </div>
   </div>
 
@@ -66,9 +51,8 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import getDetailVerse from '../services/repositories/get-detail-verse'
 import { computed, ref, watchEffect } from 'vue'
-import SurahSkeleton from '@/components/skeletons/SurahSkeleton.vue'
 import storage from '@/utils/storage'
-import { audioStore } from '@/stores'
+import { audioStore, shareStore } from '@/stores'
 import VerseLists from '@/components/VerseLists.vue'
 import {
   QARI_ID_KEY,
@@ -76,6 +60,7 @@ import {
   defaultQariId,
   defaultVerseFontSize
 } from '@/constants/cache-keys'
+import IconSpinner from '@/components/icons/IconSpinner.vue'
 
 const verseFontSize = ref(storage.get(VERSE_FONT_SIZE_KEY) ?? defaultVerseFontSize)
 
@@ -147,16 +132,10 @@ const bookmarkHandler = (verse) => {
 }
 
 const shareHandler = async (data) => {
-  try {
-    const shareData = {
-      title: `Q.S. ${surahData.value.namaLatin} ayat ${data.nomorAyat} - Quran`,
-      text: `${data.teksArab} (${data.teksIndonesia})`,
-      url: window.location.href
-    }
-    await navigator.share(shareData)
-  } catch (error) {
-    $toast.error('Terjadi kesalahan.')
-  }
+  shareStore.show({
+    link: window.location.origin + `/surah/${surahId.value}/verse/${data.nomorAyat}`,
+    text: `Q.S ${surahData.value.namaLatin} Ayat ${data.nomorAyat}`
+  })
 }
 
 const playHandler = (verse) => {

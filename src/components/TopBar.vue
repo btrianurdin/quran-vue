@@ -1,6 +1,6 @@
 <template>
   <div class="bg-cyan-600 p-3 flex items-center justify-between">
-    <button @click="layoutStore.show = true">
+    <button @click="layoutStore.show()">
       <IconHamburgerMenu class="text-white" />
     </button>
     <h1 class="text-xl font-normal text-center text-white">Quran</h1>
@@ -11,6 +11,6 @@
 </template>
 
 <script setup>
-import { layoutStore } from '@/stores';
+import { layoutStore } from '@/stores'
 import IconHamburgerMenu from './icons/IconHamburgerMenu.vue'
 </script>

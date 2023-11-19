@@ -15,6 +15,7 @@
     </main>
 
     <AudioControl />
+    <ShareBottomSheet />
   </div>
   <VueQueryDevtools />
 </template>
@@ -27,6 +28,7 @@ import SidebarLayout from './components/SidebarLayout.vue'
 import { watch } from 'vue'
 import AudioControl from './components/AudioControl.vue'
 import { layoutStore } from './stores'
+import ShareBottomSheet from './components/ShareBottomSheet.vue'
 
 const router = useRouter()
 
@@ -34,9 +36,22 @@ const router = useRouter()
 watch(
   () => router.currentRoute.value,
   () => {
-    layoutStore.show = false
+    layoutStore.hide()
   }
 )
 </script>
 
-<style scoped></style>
+<style>
+.backdrop {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+</style>
