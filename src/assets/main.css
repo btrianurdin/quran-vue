@@ -1,10 +1,10 @@
 @import './base.css';
 
 @layer base {
-  html{
+  html {
     @apply scroll-smooth;
   }
   body {
-    @apply font-roboto text-base text-gray-800 bg-gray-100;
+    @apply font-poppins text-base text-gray-800 bg-gray-100;
   }
 }
