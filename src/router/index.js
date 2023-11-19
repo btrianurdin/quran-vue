@@ -25,7 +25,10 @@ const router = createRouter({
     {
       path: '/prayers',
       name: 'prayers',
-      component: () => import('../views/ShortSurah.vue')
+      component: () => import('../views/ShortSurah.vue'),
+      meta: {
+        title: 'Doa Harian'
+      }
     },
     {
       path: '/bookmarks',
@@ -38,7 +41,10 @@ const router = createRouter({
     {
       path: '/settings',
       name: 'settings',
-      component: () => import('../views/SettingsView.vue')
+      component: () => import('../views/SettingsView.vue'),
+      meta: {
+        title: 'Pengaturan'
+      }
     },
     {
       path: '/about',
@@ -48,7 +54,10 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/AboutView.vue'),
+      meta: {
+        title: 'Tentang'
+      }
     }
   ],
   scrollBehavior() {
@@ -57,9 +66,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (!to.meta.title) return next()
-  document.title = `${to.meta.title} | Quran`
-  next()
+  try {
+    if (!to.meta.title) return next()
+    document.title = `${to.meta.title} | Quran`
+    next()
+  } catch (error) {
+    console.log('router log: ' + error)
+    next()
+  }
 })
 
 export default router

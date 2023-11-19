@@ -3,7 +3,7 @@
     :class="[
       'share-bottom-sheet absolute z-[60] w-full bg-white rounded-t-3xl bottom-0 left-0 p-4 transform translate-y-full',
       'transition-transform duration-300',
-      shareStore.isShow && 'translate-y-0'
+      shareStore.isShow && '!translate-y-0'
     ]"
   >
     <div class="h-full">
