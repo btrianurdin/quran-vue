@@ -9,7 +9,7 @@
           <Button @click="handleFontSize('decrease')">
             <MinusIcon class="w-5 stroke-2 text-white" />
           </Button>
-          <TextField class="text-center w-[70px]" :value="verseFontSize" readonly />
+          <TextField class="text-center !w-[70px]" :value="verseFontSize" />
           <Button @click="handleFontSize('increase')">
             <PlusIcon class="w-5 stroke-2 text-white" />
           </Button>
