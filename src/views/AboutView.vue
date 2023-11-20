@@ -8,12 +8,22 @@
         membaca Al-Qur'an dimanapun dan kapanpun.
       </p>
       <p class="mb-2">Aplikasi ini menggunakan sumber daya dari pihak ketiga, anatara lain:</p>
-      <ol class="list-decimal list-inside">
+      <ol class="list-decimal list-inside [&_li]:mt-2">
         <li>
           API Quran dari
           <a href="https://equran.id/" target="_blank" class="text-blue-500 underline"
-            >https://equran.id/</a
+            >https://equran.id</a
           >
+        </li>
+        <li>
+          API Doa Harian dari
+          <a
+            href="https://doa-doa-api-ahmadramadhan.fly.dev/"
+            target="_blank"
+            class="text-blue-500 underline"
+          >
+            https://doa-doa-api-ahmadramadhan.fly.dev/
+          </a>
         </li>
       </ol>
     </div>
