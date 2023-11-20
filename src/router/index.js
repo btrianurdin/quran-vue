@@ -27,8 +27,13 @@ const router = createRouter({
       name: 'prayers',
       component: () => import('../views/ShortSurah.vue'),
       meta: {
-        title: 'Doa Harian'
+        title: 'Doa-doa Harian'
       }
+    },
+    {
+      path: '/prayers/:id',
+      name: 'prayer',
+      component: () => import('../views/PrayerView.vue')
     },
     {
       path: '/bookmarks',

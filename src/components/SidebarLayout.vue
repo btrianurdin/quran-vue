@@ -6,59 +6,68 @@
       layoutStore.isShow && 'translate-x-0'
     ]"
   >
-    <div class="p-3 w-full bg-cyan-600 h-full">
-      <div class="relative">
-        <h1 class="text-xl font-normal text-center text-white">Quran</h1>
-        <button
-          class="absolute top-1/2 -translate-y-1/2 right-0 text-2xl"
-          @click="layoutStore.hide()"
-        >
-          <IconTimes />
-        </button>
+    <div class="p-3 w-full bg-cyan-600 h-full flex flex-col">
+      <div>
+        <div class="relative">
+          <h1 class="text-xl font-normal text-center text-white">Quran</h1>
+          <button
+            class="absolute top-1/2 -translate-y-1/2 right-0 text-2xl"
+            @click="layoutStore.hide()"
+          >
+            <IconTimes />
+          </button>
+        </div>
+
+        <div>
+          <ul class="siderbar-lists">
+            <li>
+              <RouterLink to="/" :class="[activeLink === '/' && 'bg-black bg-opacity-10']">
+                <i><HomeIcon class="w-5 stroke-2" /></i>
+                <span class="mt-1 leading-none">Halaman Awal</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink
+                to="/prayers"
+                :class="[activeLink === '/prayers' && 'bg-black bg-opacity-10']"
+              >
+                <i><DocumentIcon class="w-5 stroke-2" /></i>
+                <span class="mt-1 leading-none">Doa-doa Harian</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink
+                to="/bookmarks"
+                :class="[activeLink === '/bookmarks' && 'bg-black bg-opacity-10']"
+              >
+                <i><BookmarkIcon class="w-5 stroke-2" /></i>
+                <span class="mt-1 leading-none">Markah</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink
+                to="/settings"
+                :class="[activeLink === '/settings' && 'bg-black bg-opacity-10']"
+              >
+                <i><Cog6ToothIcon class="w-5 stroke-2" /></i>
+                <span class="mt-1 leading-none">Pengaturan</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink
+                to="/about"
+                :class="[activeLink === '/about' && 'bg-black bg-opacity-10']"
+              >
+                <i><InformationCircleIcon class="w-5 stroke-2" /></i>
+                <span class="mt-1 leading-none">Tentang</span>
+              </RouterLink>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <div>
-        <ul class="siderbar-lists">
-          <li>
-            <RouterLink to="/" :class="[activeLink === '/' && 'bg-black bg-opacity-10']">
-              <i><HomeIcon class="w-5 stroke-2" /></i>
-              <span class="mt-1 leading-none">Halaman Awal</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink
-              to="/prayers"
-              :class="[activeLink === '/prayers' && 'bg-black bg-opacity-10']"
-            >
-              <i><DocumentIcon class="w-5 stroke-2" /></i>
-              <span class="mt-1 leading-none">Doa Pendek</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink
-              to="/bookmarks"
-              :class="[activeLink === '/bookmarks' && 'bg-black bg-opacity-10']"
-            >
-              <i><BookmarkIcon class="w-5 stroke-2" /></i>
-              <span class="mt-1 leading-none">Markah</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink
-              to="/settings"
-              :class="[activeLink === '/settings' && 'bg-black bg-opacity-10']"
-            >
-              <i><Cog6ToothIcon class="w-5 stroke-2" /></i>
-              <span class="mt-1 leading-none">Pengaturan</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/about" :class="[activeLink === '/about' && 'bg-black bg-opacity-10']">
-              <i><InformationCircleIcon class="w-5 stroke-2" /></i>
-              <span class="mt-1 leading-none">Tentang</span>
-            </RouterLink>
-          </li>
-        </ul>
+      <div class="mt-auto text-center font-normal">
+        📖 <a href="https://quran.bnurd.me" class="underline">quran.bnurd.me</a>
       </div>
     </div>
   </div>
