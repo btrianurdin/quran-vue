@@ -7,11 +7,11 @@
         <h2 class="text-lg mb-2">Ukuran Font Ayat</h2>
         <div class="flex gap-4 w-1/3">
           <Button @click="handleFontSize('decrease')">
-            <MinusIcon class="w-5 stroke-2 text-white" />
+            <MinusIcon class="w-5 stroke-2 stroke-white" />
           </Button>
-          <TextField class="text-center !w-[70px]" :value="verseFontSize" />
+          <TextField class="text-center !w-[70px]" :value="verseFontSize" readonly />
           <Button @click="handleFontSize('increase')">
-            <PlusIcon class="w-5 stroke-2 text-white" />
+            <PlusIcon class="w-5 stroke-2 stroke-white" />
           </Button>
         </div>
       </div>
